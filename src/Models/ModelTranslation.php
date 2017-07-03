@@ -2,11 +2,11 @@
 
 namespace Askaoru\Translatable\Models;
 
-use Illuminate\Support\Facades\App;
 use Illuminate\Database\Eloquent\Model as Eloquent;
+use Illuminate\Support\Facades\App;
 
 class ModelTranslation extends Eloquent
-{   
+{
     /**
      * Property to save the caller class on.
      *
@@ -33,8 +33,9 @@ class ModelTranslation extends Eloquent
 
     /**
      * Save the calling class details.
-     * 
-     * @param  object $caller
+     *
+     * @param object $caller
+     *
      * @return void
      */
     public function setCaller($caller)
@@ -43,11 +44,12 @@ class ModelTranslation extends Eloquent
     }
 
     /**
-     * Create the field and set the translation if it doesn't exist yet, or update if it already exist
-     * 
-     * @param  string $type
-     * @param  string $value
-     * @param  string|null $locale
+     * Create the field and set the translation if it doesn't exist yet, or update if it already exist.
+     *
+     * @param string      $type
+     * @param string      $value
+     * @param string|null $locale
+     *
      * @return self
      */
     public function set($type, $value, $locale = null)
@@ -63,19 +65,20 @@ class ModelTranslation extends Eloquent
         }
 
         return self::create([
-            'type' => $type,
-            'value' => $value,
-            'locale' => $locale,
-            'model' => get_class($this->caller),
+            'type'     => $type,
+            'value'    => $value,
+            'locale'   => $locale,
+            'model'    => get_class($this->caller),
             'model_id' => $this->caller->id,
         ]);
     }
 
     /**
      * Return the translation.
-     * 
-     * @param  string $type
-     * @param  string|null $locale
+     *
+     * @param string      $type
+     * @param string|null $locale
+     *
      * @return string
      */
     public function get($type, $locale = null)
@@ -88,9 +91,10 @@ class ModelTranslation extends Eloquent
 
     /**
      * Clear the translation for the given type.
-     * 
-     * @param  string $type
-     * @param  string $locale
+     *
+     * @param string $type
+     * @param string $locale
+     *
      * @return bool
      */
     public function clear($type, $locale = null)
@@ -109,8 +113,9 @@ class ModelTranslation extends Eloquent
 
     /**
      * Return the locale if it's set, return default application locale if not set.
-     * 
-     * @param  string $locale
+     *
+     * @param string $locale
+     *
      * @return string
      */
     protected function getLocale($locale)
@@ -124,9 +129,10 @@ class ModelTranslation extends Eloquent
 
     /**
      * Return the existing record for specified type and locale of the caller model.
-     * 
-     * @param  string $type
-     * @param  string $locale 
+     *
+     * @param string $type
+     * @param string $locale
+     *
      * @return self
      */
     protected function getExistingTranslation($type, $locale)
