@@ -16,7 +16,7 @@ class CreateModelTranslationsTable extends Migration
         Schema::create('model_translations', function (Blueprint $table) {
             $table->increments('id');
             $table->string('type');
-            $table->text('translation');
+            $table->text('value');
             $table->string('locale');
             $table->string('model');
             $table->integer('model_id');
