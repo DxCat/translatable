@@ -31,6 +31,6 @@ class TranslatableServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->make('Askaoru\Translatable\TranslatableController');
+        //
     }
 }
