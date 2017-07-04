@@ -57,7 +57,7 @@ class ModelTranslation extends Eloquent
         if (is_array($value)) {
             $translation_collection = [];
 
-            foreach($value as $locale => $translation) {
+            foreach ($value as $locale => $translation) {
                 $translation_collection[] = $this->createOrUpdateSingleTranslation($type, $translation, $locale);
             }
 
@@ -69,10 +69,11 @@ class ModelTranslation extends Eloquent
 
     /**
      * Determine whether the record should be created or updated.
-     * 
-     * @param  string      $type
-     * @param  string      $value
-     * @param  string|null $locale
+     *
+     * @param string      $type
+     * @param string      $value
+     * @param string|null $locale
+     *
      * @return self
      */
     public function createOrUpdateSingleTranslation($type, $value, $locale = null)
@@ -88,10 +89,11 @@ class ModelTranslation extends Eloquent
 
     /**
      * Create new translation field.
-     * 
-     * @param  string      $type
-     * @param  string      $value
-     * @param  string|null $locale
+     *
+     * @param string      $type
+     * @param string      $value
+     * @param string|null $locale
+     *
      * @return self
      */
     public function createTranslation($type, $value, $locale = null)
@@ -109,11 +111,12 @@ class ModelTranslation extends Eloquent
 
     /**
      * Update existing translation value.
-     * 
-     * @param  string      $type
-     * @param  string      $value
-     * @param  string|null $locale
-     * @return self      
+     *
+     * @param string      $type
+     * @param string      $value
+     * @param string|null $locale
+     *
+     * @return self
      */
     public function updateTranslation($type, $value, $locale = null)
     {
@@ -122,7 +125,7 @@ class ModelTranslation extends Eloquent
 
         $translation->value = $value;
         $translation->save();
-        
+
         return $translation;
     }
 
