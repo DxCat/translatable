@@ -23,7 +23,7 @@ class TranslatableTraitTest extends TestCase
 
     /**
      * Target : Make sure that the translation() returns an instance of Askaoru\Translatable\Models\ModelTranslation.
-     * Target 2 : The returned instance must have a caller property which is an instance of the original class. 
+     * Target 2 : The returned instance must have a caller property which is an instance of the original class.
      */
     public function testTraitConnection()
     {
