@@ -143,7 +143,7 @@ class ModelTranslation extends Eloquent
         $translation = $this->getExistingTranslation($type, $locale);
 
         if (!$translation) {
-            return null;
+            return;
         }
 
         return $translation->value;
