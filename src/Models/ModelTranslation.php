@@ -135,12 +135,16 @@ class ModelTranslation extends Eloquent
      * @param string      $type
      * @param string|null $locale
      *
-     * @return string
+     * @return mixed
      */
     public function get($type, $locale = null)
     {
         $locale = $this->getLocale($locale);
         $translation = $this->getExistingTranslation($type, $locale);
+
+        if (!$translation) {
+            return null;
+        }
 
         return $translation->value;
     }
