@@ -44,7 +44,7 @@ class ModelTranslation extends Eloquent
     }
 
     /**
-     * Create the field and set the translation if it doesn't exist yet, or update if it already exist.
+     * Sets the translations for the caller model.
      *
      * @param string      $type
      * @param string      $value
@@ -54,15 +54,49 @@ class ModelTranslation extends Eloquent
      */
     public function set($type, $value, $locale = null)
     {
-        $locale = $this->getLocale($locale);
+        if (is_array($value)) {
+            $translation_collection = [];
+
+            foreach($value as $locale => $translation) {
+                $translation_collection[] = $this->createOrUpdateSingleTranslation($type, $translation, $locale);
+            }
+
+            return collect($translation_collection);
+        }
+
+        return $this->createOrUpdateSingleTranslation($type, $value, $locale);
+    }
+
+    /**
+     * Determine whether the record should be created or updated.
+     * 
+     * @param  string      $type
+     * @param  string      $value
+     * @param  string|null $locale
+     * @return self
+     */
+    public function createOrUpdateSingleTranslation($type, $value, $locale = null)
+    {
         $exist = $this->getExistingTranslation($type, $locale);
 
         if ($exist) {
-            $exist->value = $value;
-            $exist->save();
-
-            return $exist;
+            return $this->updateTranslation($type, $value, $locale);
         }
+
+        return $this->createTranslation($type, $value, $locale);
+    }
+
+    /**
+     * Create new translation field.
+     * 
+     * @param  string      $type
+     * @param  string      $value
+     * @param  string|null $locale
+     * @return self
+     */
+    public function createTranslation($type, $value, $locale = null)
+    {
+        $locale = $this->getLocale($locale);
 
         return self::create([
             'type'     => $type,
@@ -71,6 +105,25 @@ class ModelTranslation extends Eloquent
             'model'    => get_class($this->caller),
             'model_id' => $this->caller->id,
         ]);
+    }
+
+    /**
+     * Update existing translation value.
+     * 
+     * @param  string      $type
+     * @param  string      $value
+     * @param  string|null $locale
+     * @return self      
+     */
+    public function updateTranslation($type, $value, $locale = null)
+    {
+        $locale = $this->getLocale($locale);
+        $translation = $this->getExistingTranslation($type, $locale);
+
+        $translation->value = $value;
+        $translation->save();
+        
+        return $translation;
     }
 
     /**
