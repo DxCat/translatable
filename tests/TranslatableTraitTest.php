@@ -28,7 +28,7 @@ class TranslatableTraitTest extends TestCase
     public function testTraitConnection()
     {
         $this->assertInstanceOf('Askaoru\Translatable\Models\ModelTranslation', $this->post->translation());
-        $this->assertInstanceOf('Askaoru\Translatable\Tests\Models\Post', $this->post->translation()['caller']);
+        $this->assertInstanceOf('Askaoru\Translatable\Tests\Models\Post', $this->post->translation()->getCaller());
     }
 
     /**
