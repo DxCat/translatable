@@ -42,17 +42,17 @@ class ModelTranslation extends Eloquent
     {
         $this->caller = $caller;
     }
-    
+
     /**
      * Return the saved caller.
-     * 
+     *
      * @return object
      */
     public function getCaller()
     {
         return $this->caller;
     }
-    
+
     /**
      * Sets the translations for the caller model.
      *
