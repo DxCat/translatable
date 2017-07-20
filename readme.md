@@ -116,6 +116,6 @@ Well this is just as you would imagine. It would clear the translation that was 
 # Contributions
 Every pull request and contributions to improve this package would be very, very much appreciated. And if you have any question, found a bug, or need any help related to this package, please do open an issue. I will do my best to attend to them.
 
-
+[List of all contributors](https://github.com/askaoru/translatable/graphs/contributors)
 
 That's it, I hope this little package would be helpful to you. Thanks for giving it a try!
