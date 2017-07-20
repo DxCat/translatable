@@ -130,7 +130,6 @@ class ModelTranslation extends Eloquent
      */
     public function updateTranslation($type, $value, $locale = null)
     {
-        $locale = $this->getLocale($locale);
         $translation = $this->getExistingTranslation($type, $locale);
 
         $translation->value = $value;
@@ -207,6 +206,8 @@ class ModelTranslation extends Eloquent
      */
     protected function getExistingTranslation($type, $locale)
     {
+        $locale = $this->getLocale($locale);
+
         return self::where('type', $type)
             ->where('locale', $locale)
             ->where('model', get_class($this->caller))
