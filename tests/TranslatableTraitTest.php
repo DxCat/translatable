@@ -176,7 +176,7 @@ class TranslatableTraitTest extends TestCase
 
         $this->assertEquals('Post Title', $this->post->translation()->getAll('title', ['en'])['en']);
         $this->assertCount(1, $this->post->translation()->getAll('title', ['ar']));
-        $this->assertCount(2, $this->post->translation()->getAll('title', ['ar','en']));
+        $this->assertCount(2, $this->post->translation()->getAll('title', ['ar', 'en']));
         $this->assertCount(2, $this->post->translation()->getAll('title', []));
     }
 
@@ -201,7 +201,7 @@ class TranslatableTraitTest extends TestCase
         $this->assertEquals(1, $this->post->translation()->clearAll('title', ['ar']));
         $this->assertCount(2, $this->post->translation()->getAll('title'));
         $this->assertEquals('Post Title', $this->post->translation()->getAll('title', ['en'])['en']);
-        $this->assertEquals(2, $this->post->translation()->clearAll('title', ['en','my']));
+        $this->assertEquals(2, $this->post->translation()->clearAll('title', ['en', 'my']));
         $this->assertCount(0, $this->post->translation()->getAll('title'));
     }
 }

@@ -182,9 +182,9 @@ class ModelTranslation extends Eloquent
      * Clear the translations for type , if no locale provided will clear all.
      *
      * @param string $type
-     * @param array $locale
+     * @param array  $locale
      *
-     * @return integer
+     * @return int
      */
     public function clearAll($type, $locale = [])
     {
@@ -195,7 +195,7 @@ class ModelTranslation extends Eloquent
      * Return array of locale with translations for type , if no locale provided will return all.
      *
      * @param string $type
-     * @param array $locale
+     * @param array  $locale
      *
      * @return array
      */
