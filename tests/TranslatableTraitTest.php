@@ -2,8 +2,6 @@
 
 namespace Askaoru\Translatable\Tests;
 
-use Askaoru\Translatable\Tests\Models\Post;
-
 class TranslatableTraitTest extends TestCase
 {
     /**
@@ -149,7 +147,7 @@ class TranslatableTraitTest extends TestCase
     /**
      * Target : Make sure createOrUpdateSingleTranslation() updates the translation table on second time .
      */
-    public function testcreateOrUpdateSingleTranslationUpdatesWithoutLocaleOnSecondTime()
+    public function testCreateOrUpdateSingleTranslationUpdatesWithoutLocaleOnSecondTime()
     {
         $this->post->translation()->createOrUpdateSingleTranslation('title', 'First Title Without Locale');
 
@@ -157,5 +155,53 @@ class TranslatableTraitTest extends TestCase
 
         $this->assertNull($this->post->translation()->where('value', 'First Title Without Locale')->first());
         $this->assertEquals('Second Title Without Locale', $this->post->translation()->get('title'));
+    }
+
+    /**
+     * Target : Make sure getAll without locale returns all translations .
+     */
+    public function testGetAllTranslationsWithoutLocale()
+    {
+        $this->post->translation()->set('title', ['en' => 'Post Title', 'ar' => 'اول عنوان المنشور']);
+
+        $this->assertCount(2, $this->post->translation()->getAll('title'));
+    }
+
+    /**
+     * Target : Make sure getAll with locale returns exact translations with locale .
+     */
+    public function testGetAllTranslationsWithLocale()
+    {
+        $this->post->translation()->set('title', ['en' => 'Post Title', 'ar' => 'اول عنوان المنشور']);
+
+        $this->assertEquals('Post Title', $this->post->translation()->getAll('title', ['en'])['en']);
+        $this->assertCount(1, $this->post->translation()->getAll('title', ['ar']));
+        $this->assertCount(2, $this->post->translation()->getAll('title', ['ar','en']));
+        $this->assertCount(2, $this->post->translation()->getAll('title', []));
+    }
+
+    /**
+     * Target : Make sure clearAll without locale clears all translations.
+     */
+    public function testClearAllTranslationsWithoutLocale()
+    {
+        $this->post->translation()->set('title', ['en' => 'Post Title', 'ar' => 'اول عنوان المنشور']);
+
+        $this->assertEquals(2, $this->post->translation()->clearAll('title'));
+        $this->assertCount(0, $this->post->translation()->getAll('title'));
+    }
+
+    /**
+     * Target : Make sure clearAll with locale clears exact translations.
+     */
+    public function testClearAllTranslationsWithLocale()
+    {
+        $this->post->translation()->set('title', ['en' => 'Post Title', 'ar' => 'اول عنوان المنشور', 'my' => 'Terjemahan Tajuk']);
+
+        $this->assertEquals(1, $this->post->translation()->clearAll('title', ['ar']));
+        $this->assertCount(2, $this->post->translation()->getAll('title'));
+        $this->assertEquals('Post Title', $this->post->translation()->getAll('title', ['en'])['en']);
+        $this->assertEquals(2, $this->post->translation()->clearAll('title', ['en','my']));
+        $this->assertCount(0, $this->post->translation()->getAll('title'));
     }
 }
