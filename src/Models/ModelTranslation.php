@@ -148,7 +148,6 @@ class ModelTranslation extends Eloquent
      */
     public function get($type, $locale = null)
     {
-        $locale = $this->getLocale($locale);
         $translation = $this->getExistingTranslation($type, $locale);
 
         if (!$translation) {
@@ -168,7 +167,6 @@ class ModelTranslation extends Eloquent
      */
     public function clear($type, $locale = null)
     {
-        $locale = $this->getLocale($locale);
         $exist = $this->getExistingTranslation($type, $locale);
 
         if (!$exist) {
