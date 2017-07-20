@@ -154,7 +154,8 @@ class TranslatableTraitTest extends TestCase
         $this->post->translation()->createOrUpdateSingleTranslation('title', 'First Title Without Locale');
 
         $this->post->translation()->createOrUpdateSingleTranslation('title', 'Second Title Without Locale');
-
+        
+        
         $this->assertNull($this->post->translation()->where('value','First Title Without Locale')->first());
         $this->assertEquals('Second Title Without Locale',$this->post->translation()->get('title'));
     }
