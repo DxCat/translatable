@@ -158,7 +158,31 @@ class ModelTranslation extends Eloquent
     }
 
     /**
-     * Clear the translation for the given type.
+     * Return a collection of translation type for all locales.
+     *
+     * @param string $type
+     *
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    public function getAll($type)
+    {
+        $translations = $this->getAllExistingTranslation($type);
+
+        if (!$translations) {
+            return;
+        }
+
+        $translation_arrays = [];
+
+        foreach ($translations as $translation) {
+            $translation_arrays[] = [$translation->locale => $translation->value];
+        }
+
+        return collect($translation_arrays);
+    }
+
+    /**
+     * Clear a single translation for the given type and locale.
      *
      * @param string $type
      * @param string $locale
@@ -174,6 +198,28 @@ class ModelTranslation extends Eloquent
         }
 
         $exist->delete();
+
+        return true;
+    }
+
+    /**
+     * Clear the translations of the given type for all locales.
+     *
+     * @param string $type
+     *
+     * @return bool
+     */
+    public function clearAll($type)
+    {
+        $translations = $this->getAllExistingTranslation($type);
+
+        if (!$translations) {
+            return false;
+        }
+
+        foreach ($translations as $translation) {
+            $translation->delete();
+        }
 
         return true;
     }
@@ -211,5 +257,20 @@ class ModelTranslation extends Eloquent
             ->where('model', get_class($this->caller))
             ->where('model_id', $this->caller->id)
             ->first();
+    }
+
+    /**
+     * Return the existing records for specified type for all locales.
+     *
+     * @param string $type
+     *
+     * @return self
+     */
+    protected function getAllExistingTranslation($type)
+    {
+        return self::where('type', $type)
+            ->where('model', get_class($this->caller))
+            ->where('model_id', $this->caller->id)
+            ->get();
     }
 }
