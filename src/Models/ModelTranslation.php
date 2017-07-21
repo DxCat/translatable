@@ -179,6 +179,38 @@ class ModelTranslation extends Eloquent
     }
 
     /**
+     * Clear the translations for type , if no locale provided will clear all.
+     *
+     * @param string $type
+     * @param array  $locale
+     *
+     * @return int
+     */
+    public function clearAll($type, $locale = [])
+    {
+        return $this->whereTypeAndLocale($type, $locale)->delete();
+    }
+
+    /**
+     * Return array of locale with translations for type , if no locale provided will return all.
+     *
+     * @param string $type
+     * @param array  $locale
+     *
+     * @return array
+     */
+    public function getAll($type, $locale = [])
+    {
+        return $this->whereTypeAndLocale($type, $locale)
+                    ->get()
+                    ->map(function ($row) {
+                        return [$row->locale => $row->value];
+                    })
+                    ->collapse()
+                    ->all();
+    }
+
+    /**
      * Return the locale if it's set, return default application locale if not set.
      *
      * @param string $locale
@@ -206,10 +238,41 @@ class ModelTranslation extends Eloquent
     {
         $locale = $this->getLocale($locale);
 
-        return self::where('type', $type)
-            ->where('locale', $locale)
-            ->where('model', get_class($this->caller))
-            ->where('model_id', $this->caller->id)
-            ->first();
+        return $this->whereType($type)
+                    ->where('locale', $locale)
+                    ->first();
+    }
+
+    /**
+     * Return query with all translation if no locale provided.
+     *
+     * @param $query
+     * @param $type
+     * @param array $locale
+     *
+     * @return mixed
+     */
+    public function scopeWhereTypeAndLocale($query, $type, $locale = [])
+    {
+        if (empty($locale)) {
+            return $query->whereType($type);
+        }
+
+        return $query->whereType($type)->whereIn('locale', $locale);
+    }
+
+    /**
+     * Return query for type of caller model.
+     *
+     * @param $query
+     * @param $type
+     *
+     * @return mixed
+     */
+    public function scopeWhereType($query, $type)
+    {
+        return $query->where('type', $type)
+                     ->where('model', get_class($this->caller))
+                     ->where('model_id', $this->caller->id);
     }
 }

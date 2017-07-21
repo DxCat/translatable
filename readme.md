@@ -95,6 +95,12 @@ This simple method is how you fetch the translation that you have set.
     
     // Get the title in other language, in this example, Japanese.
     $post->translation()->get('title', 'jp'); // Would return 'こんにちは世界'.
+    
+    //Get all titles with there locale
+    $post->translation()->getAll('title'); //Would return ['en' => 'Title' , 'ar' => 'عنوان']
+    
+    //Get all titles for sepcific locales
+    $post->translation()->getAll('title',['en','my']); //Would return ['en' => 'Title' , 'my' => 'Alamat']
 ```
 
 3. The `clear()` method.
@@ -111,6 +117,12 @@ Well this is just as you would imagine. It would clear the translation that was 
     
     // Clear the translation for the post title of the Japanese language.
     $post->translation()->clear('title', 'jp');
+    
+    // Clear all translations for post title 
+    $post->translation()->clearAll('title'); //Would return number of deleted rows
+    
+    // Clear the translation for specific locales
+    $post->translation()->clearAll('title',['en','ar']); //Would remove translations of ar and en
 ```
 
 # Contributions
