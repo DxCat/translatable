@@ -158,6 +158,24 @@ class ModelTranslation extends Eloquent
     }
 
     /**
+     * Return an array of specified locales for a given type, return all when no locales are given.
+     *
+     * @param string $type
+     * @param array  $locale
+     *
+     * @return array
+     */
+    public function getAll($type, $locale = [])
+    {
+        return $this->whereTypeAndLocale($type, $locale)->get()
+                    ->map(function ($row) {
+                        return [$row->locale => $row->value];
+                    })
+                    ->collapse()
+                    ->all();
+    }
+
+    /**
      * Clear the translation for the given type.
      *
      * @param string $type
@@ -179,6 +197,36 @@ class ModelTranslation extends Eloquent
     }
 
     /**
+     * Clear the translations of specified locales for a given type, clear all when no locales are given.
+     *
+     * @param string $type
+     * @param array  $locale
+     *
+     * @return int
+     */
+    public function clearAll($type, $locale = [])
+    {
+        return $this->whereTypeAndLocale($type, $locale)->delete();
+    }
+
+    /**
+     * Return the existing record for specified type and locale of the caller model.
+     *
+     * @param string $type
+     * @param string $locale
+     *
+     * @return self
+     */
+    protected function getExistingTranslation($type, $locale)
+    {
+        $locale = $this->getLocale($locale);
+
+        return $this->whereType($type)
+                    ->where('locale', $locale)
+                    ->first();
+    }
+
+    /**
      * Return the locale if it's set, return default application locale if not set.
      *
      * @param string $locale
@@ -195,21 +243,35 @@ class ModelTranslation extends Eloquent
     }
 
     /**
-     * Return the existing record for specified type and locale of the caller model.
+     * Return query with all translation if no locale provided.
      *
-     * @param string $type
-     * @param string $locale
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param string                                $type
+     * @param array                                 $locale
      *
-     * @return self
+     * @return \Illuminate\Database\Eloquent\Builder
      */
-    protected function getExistingTranslation($type, $locale)
+    public function scopeWhereTypeAndLocale($query, $type, $locale = [])
     {
-        $locale = $this->getLocale($locale);
+        if (empty($locale)) {
+            return $query->whereType($type);
+        }
 
-        return self::where('type', $type)
-            ->where('locale', $locale)
-            ->where('model', get_class($this->caller))
-            ->where('model_id', $this->caller->id)
-            ->first();
+        return $query->whereType($type)->whereIn('locale', $locale);
+    }
+
+    /**
+     * Return query for type of caller model.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param string                                $type
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeWhereType($query, $type)
+    {
+        return $query->where('type', $type)
+                     ->where('model', get_class($this->caller))
+                     ->where('model_id', $this->caller->id);
     }
 }
