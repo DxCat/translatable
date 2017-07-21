@@ -235,11 +235,7 @@ class ModelTranslation extends Eloquent
      */
     protected function getLocale($locale)
     {
-        if (is_null($locale)) {
-            $locale = App::getLocale();
-        }
-
-        return $locale;
+        return $locale ?: App::getLocale();
     }
 
     /**
