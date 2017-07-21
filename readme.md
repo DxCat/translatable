@@ -57,7 +57,7 @@ class Post extends Model
 ```
 
 # Usage
-Basically, there's only 3 methods that you would ever need for this package, `set()`, `get()` and `clear()`. 
+Basically, there's only 3 main methods that you would ever need for this package, `set()`, `get()` and `clear()`. 
 
 1. The `set()` method.
 This method is the how you would set your translations. It's very versatile as you can use it to set a single or multiple languages at the same time. It is also a 'save or update' kind of things which mean that if you're trying to set a translation to something that has been defined before, it would update that. But if it was never defined, it will create the record instead.
@@ -90,17 +90,19 @@ This simple method is how you fetch the translation that you have set.
     // Again, fetch the model that this translation trait is attached to, in this case, Post.
     $post = Post::find(1);
     
-    // Get the title in current / default language
+    // Get the title in current / default language.
     $post->translation()->get('title'); // Would return 'Hello World' again assuming default is English.
     
     // Get the title in other language, in this example, Japanese.
     $post->translation()->get('title', 'jp'); // Would return 'こんにちは世界'.
     
-    //Get all titles with there locale
-    $post->translation()->getAll('title'); //Would return ['en' => 'Title' , 'ar' => 'عنوان']
+
+    # There's also a getAll() method to make it easier for you fetch multiple translations at one time.
+    // Get title for all languages.
+    $post->translation()->getAll('title'); // Would return ['en' => 'Title', 'jp' => 'こんにちは世界', 'ar' => 'مرحبا بالعالم']
     
-    //Get all titles for sepcific locales
-    $post->translation()->getAll('title',['en','my']); //Would return ['en' => 'Title' , 'my' => 'Alamat']
+    // Get titles for specific languages.
+    $post->translation()->getAll('title', ['en', 'ar']); // Would return ['en' => 'Title', 'ar' => 'بالعالم']
 ```
 
 3. The `clear()` method.
@@ -118,11 +120,12 @@ Well this is just as you would imagine. It would clear the translation that was 
     // Clear the translation for the post title of the Japanese language.
     $post->translation()->clear('title', 'jp');
     
-    // Clear all translations for post title 
-    $post->translation()->clearAll('title'); //Would return number of deleted rows
+    # There's also a clearAll() method to make it easier for you clear multiple translations at one time.
+    // Clear all translations for post title.
+    $post->translation()->clearAll('title'); // Would return number of deleted rows
     
-    // Clear the translation for specific locales
-    $post->translation()->clearAll('title',['en','ar']); //Would remove translations of ar and en
+    // Clear the translation for post title in specific languages.
+    $post->translation()->clearAll('title', ['en', 'jp']); // Would remove translations for English and Japanese
 ```
 
 # Contributions
