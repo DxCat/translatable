@@ -88,9 +88,7 @@ class ModelTranslation extends Eloquent
      */
     public function createOrUpdateSingleTranslation($type, $value, $locale = null)
     {
-        $exist = $this->getExistingTranslation($type, $locale);
-
-        if ($exist) {
+        if ($this->getExistingTranslation($type, $locale)) {
             return $this->updateTranslation($type, $value, $locale);
         }
 
@@ -148,13 +146,11 @@ class ModelTranslation extends Eloquent
      */
     public function get($type, $locale = null)
     {
-        $translation = $this->getExistingTranslation($type, $locale);
-
-        if (!$translation) {
-            return;
+        if ($translation = $this->getExistingTranslation($type, $locale)) {
+            return $translation->value;
         }
 
-        return $translation->value;
+        return;
     }
 
     /**
@@ -185,15 +181,13 @@ class ModelTranslation extends Eloquent
      */
     public function clear($type, $locale = null)
     {
-        $exist = $this->getExistingTranslation($type, $locale);
+        if ($exist = $this->getExistingTranslation($type, $locale)) {
+            $exist->delete();
 
-        if (!$exist) {
-            return false;
+            return true;
         }
-
-        $exist->delete();
-
-        return true;
+        
+        return false;
     }
 
     /**
