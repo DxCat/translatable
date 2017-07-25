@@ -149,8 +149,6 @@ class ModelTranslation extends Eloquent
         if ($translation = $this->getExistingTranslation($type, $locale)) {
             return $translation->value;
         }
-
-        return;
     }
 
     /**
@@ -186,7 +184,7 @@ class ModelTranslation extends Eloquent
 
             return true;
         }
-        
+
         return false;
     }
 
