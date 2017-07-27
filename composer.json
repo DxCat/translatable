@@ -26,6 +26,13 @@
             "Askaoru\\Translatable\\": "src"
         }
     },
+    "extra":{
+        "laravel":{
+            "providers":[
+                "Askaoru\\Translatable\\TranslatableServiceProvider"
+            ]
+        }
+    },
     "autoload-dev": {
         "psr-4": {
             "Askaoru\\Translatable\\Tests\\": "tests"
