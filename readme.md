@@ -1,3 +1,7 @@
+#### :zap:Package Archived and Abandoned :zap:
+This package is abandoned and no longer maintained. This package no longer have much value for the open source community
+and it is severely outdated. I'm sorry for any inconveniences caused.
+
 # Laravel 5 Translatable
 
 A simple package that makes it really easy for you to create models with translations. 
